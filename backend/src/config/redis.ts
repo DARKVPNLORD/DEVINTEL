@@ -12,6 +12,7 @@ export function getRedis(): Redis {
     host: env.REDIS_HOST,
     port: env.REDIS_PORT,
     password: env.REDIS_PASSWORD || undefined,
+    tls: env.NODE_ENV === 'production' ? {} : undefined,
     maxRetriesPerRequest: null,
     retryStrategy(times: number) {
       const delay = Math.min(times * 200, 5000);
