@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { clsx } from 'clsx';
 
 // ============================================================
-// RADAR CHART (SVG)
+// RADAR CHART
 // ============================================================
 export interface RadarChartProps {
   data: { label: string; value: number }[];
@@ -12,8 +12,8 @@ export interface RadarChartProps {
 
 export function RadarChart({ data, size = 280, className }: RadarChartProps) {
   const center = size / 2;
-  const radius = size * 0.38;
-  const levels = 5;
+  const radius = size * 0.36;
+  const levels = 4;
 
   const points = useMemo(() => {
     const count = data.length;
@@ -23,8 +23,8 @@ export function RadarChart({ data, size = 280, className }: RadarChartProps) {
       return {
         x: center + r * Math.cos(angle),
         y: center + r * Math.sin(angle),
-        labelX: center + (radius + 24) * Math.cos(angle),
-        labelY: center + (radius + 24) * Math.sin(angle),
+        labelX: center + (radius + 28) * Math.cos(angle),
+        labelY: center + (radius + 28) * Math.sin(angle),
         label: d.label,
         value: d.value,
       };
@@ -48,68 +48,24 @@ export function RadarChart({ data, size = 280, className }: RadarChartProps) {
   const axes = useMemo(() => {
     return data.map((_, i) => {
       const angle = (Math.PI * 2 * i) / data.length - Math.PI / 2;
-      return {
-        x2: center + radius * Math.cos(angle),
-        y2: center + radius * Math.sin(angle),
-      };
+      return { x2: center + radius * Math.cos(angle), y2: center + radius * Math.sin(angle) };
     });
   }, [data, center, radius]);
 
   return (
-    <svg
-      viewBox={`0 0 ${size} ${size}`}
-      width={size}
-      height={size}
-      className={clsx('overflow-visible', className)}
-    >
-      {/* Grid polygons */}
+    <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} className={clsx('overflow-visible', className)}>
       {gridPolygons.map((poly, i) => (
-        <polygon
-          key={i}
-          points={poly}
-          fill="none"
-          stroke="currentColor"
-          className="text-surface-200 dark:text-surface-700"
-          strokeWidth={0.5}
-        />
+        <polygon key={i} points={poly} fill="none" stroke="#2a2a2a" strokeWidth={0.5} />
       ))}
-
-      {/* Axes */}
       {axes.map((axis, i) => (
-        <line
-          key={i}
-          x1={center}
-          y1={center}
-          x2={axis.x2}
-          y2={axis.y2}
-          stroke="currentColor"
-          className="text-surface-200 dark:text-surface-700"
-          strokeWidth={0.5}
-        />
+        <line key={i} x1={center} y1={center} x2={axis.x2} y2={axis.y2} stroke="#2a2a2a" strokeWidth={0.5} />
       ))}
-
-      {/* Data polygon */}
-      <polygon
-        points={polygonPoints}
-        className="fill-brand-500/20 stroke-brand-500"
-        strokeWidth={2}
-      />
-
-      {/* Data points */}
+      <polygon points={polygonPoints} fill="rgba(215, 25, 33, 0.12)" stroke="#d71921" strokeWidth={1.5} />
       {points.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r={4} className="fill-brand-500" />
+        <circle key={i} cx={p.x} cy={p.y} r={3} fill="#d71921" />
       ))}
-
-      {/* Labels */}
       {points.map((p, i) => (
-        <text
-          key={i}
-          x={p.labelX}
-          y={p.labelY}
-          textAnchor="middle"
-          dominantBaseline="central"
-          className="fill-surface-600 dark:fill-surface-400 text-[10px] font-medium"
-        >
+        <text key={i} x={p.labelX} y={p.labelY} textAnchor="middle" dominantBaseline="central" fill="#737373" fontSize="10" fontFamily="'Space Mono', monospace">
           {p.label}
         </text>
       ))}
@@ -118,7 +74,7 @@ export function RadarChart({ data, size = 280, className }: RadarChartProps) {
 }
 
 // ============================================================
-// LINE CHART (SVG)
+// LINE CHART
 // ============================================================
 export interface LineChartProps {
   data: { label: string; value: number }[];
@@ -128,13 +84,7 @@ export interface LineChartProps {
   showArea?: boolean;
 }
 
-export function LineChart({
-  data,
-  height = 200,
-  className,
-  color = '#6366f1',
-  showArea = true,
-}: LineChartProps) {
+export function LineChart({ data, height = 200, className, color = '#d71921', showArea = true }: LineChartProps) {
   const padding = { top: 20, right: 20, bottom: 30, left: 40 };
 
   const { path, areaPath, points, yTicks, xLabels, width } = useMemo(() => {
@@ -158,24 +108,18 @@ export function LineChart({
     const pathD = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
     const areaD = `${pathD} L${pts[pts.length - 1].x},${padding.top + innerH} L${pts[0].x},${padding.top + innerH} Z`;
 
-    const tickCount = 5;
+    const tickCount = 4;
     const yTks = Array.from({ length: tickCount + 1 }, (_, i) => {
       const val = minVal + (range * i) / tickCount;
-      return {
-        y: padding.top + innerH - (i / tickCount) * innerH,
-        label: Math.round(val).toString(),
-      };
+      return { y: padding.top + innerH - (i / tickCount) * innerH, label: Math.round(val).toString() };
     });
 
-    const step = Math.max(1, Math.floor(data.length / 6));
+    const step = Math.max(1, Math.floor(data.length / 5));
     const xLbls = data
       .filter((_, i) => i % step === 0 || i === data.length - 1)
-      .map((d, _, arr) => {
+      .map((d) => {
         const idx = data.indexOf(d);
-        return {
-          x: padding.left + (idx / Math.max(data.length - 1, 1)) * innerW,
-          label: d.label,
-        };
+        return { x: padding.left + (idx / Math.max(data.length - 1, 1)) * innerW, label: d.label };
       });
 
     return { path: pathD, areaPath: areaD, points: pts, yTicks: yTks, xLabels: xLbls, width: w };
@@ -183,59 +127,26 @@ export function LineChart({
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className={clsx('w-full', className)} preserveAspectRatio="xMidYMid meet">
-      {/* Grid lines */}
       {yTicks.map((t, i) => (
         <g key={i}>
-          <line
-            x1={padding.left}
-            y1={t.y}
-            x2={width - padding.right}
-            y2={t.y}
-            stroke="currentColor"
-            className="text-surface-100 dark:text-surface-800"
-            strokeWidth={1}
-          />
-          <text
-            x={padding.left - 8}
-            y={t.y}
-            textAnchor="end"
-            dominantBaseline="central"
-            className="fill-surface-400 dark:fill-surface-500 text-[10px]"
-          >
-            {t.label}
-          </text>
+          <line x1={padding.left} y1={t.y} x2={width - padding.right} y2={t.y} stroke="#1a1a1a" strokeWidth={1} />
+          <text x={padding.left - 8} y={t.y} textAnchor="end" dominantBaseline="central" fill="#525252" fontSize="10" fontFamily="'Space Mono', monospace">{t.label}</text>
         </g>
       ))}
-
-      {/* X labels */}
       {xLabels.map((l, i) => (
-        <text
-          key={i}
-          x={l.x}
-          y={height - 6}
-          textAnchor="middle"
-          className="fill-surface-400 dark:fill-surface-500 text-[10px]"
-        >
-          {l.label}
-        </text>
+        <text key={i} x={l.x} y={height - 6} textAnchor="middle" fill="#525252" fontSize="9" fontFamily="'Space Mono', monospace">{l.label}</text>
       ))}
-
-      {/* Area */}
-      {showArea && <path d={areaPath} fill={color} opacity={0.1} />}
-
-      {/* Line */}
-      <path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-
-      {/* Points */}
+      {showArea && <path d={areaPath} fill={color} opacity={0.06} />}
+      <path d={path} fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
       {points.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r={3} fill={color} />
+        <circle key={i} cx={p.x} cy={p.y} r={2} fill={color} />
       ))}
     </svg>
   );
 }
 
 // ============================================================
-// ACTIVITY HEATMAP (SVG)
+// ACTIVITY HEATMAP
 // ============================================================
 export interface HeatmapProps {
   data: { date: string; count: number }[];
@@ -243,7 +154,7 @@ export interface HeatmapProps {
 }
 
 export function ActivityHeatmap({ data, className }: HeatmapProps) {
-  const cellSize = 12;
+  const cellSize = 11;
   const gap = 2;
   const weeks = 52;
   const days = 7;
@@ -259,12 +170,7 @@ export function ActivityHeatmap({ data, className }: HeatmapProps) {
         const date = new Date(today);
         date.setDate(date.getDate() - ((weeks - 1 - w) * 7 + (6 - d)));
         const dateStr = date.toISOString().split('T')[0];
-        cells.push({
-          x: w * (cellSize + gap),
-          y: d * (cellSize + gap),
-          count: map.get(dateStr) || 0,
-          date: dateStr,
-        });
+        cells.push({ x: w * (cellSize + gap), y: d * (cellSize + gap), count: map.get(dateStr) || 0, date: dateStr });
       }
     }
 
@@ -272,83 +178,45 @@ export function ActivityHeatmap({ data, className }: HeatmapProps) {
   }, [data]);
 
   const getColor = (count: number) => {
-    if (count === 0) return 'fill-surface-100 dark:fill-surface-800';
+    if (count === 0) return '#1a1a1a';
     const intensity = count / maxCount;
-    if (intensity <= 0.25) return 'fill-brand-200 dark:fill-brand-900';
-    if (intensity <= 0.5) return 'fill-brand-400 dark:fill-brand-700';
-    if (intensity <= 0.75) return 'fill-brand-500 dark:fill-brand-500';
-    return 'fill-brand-600 dark:fill-brand-400';
+    if (intensity <= 0.25) return '#3d1012';
+    if (intensity <= 0.5) return '#7a1a1e';
+    if (intensity <= 0.75) return '#b5181d';
+    return '#d71921';
   };
 
-  const dayLabels = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+  const dayLabels = ['', 'M', '', 'W', '', 'F', ''];
 
   return (
     <div className={clsx('overflow-x-auto', className)}>
-      <svg
-        width={weeks * (cellSize + gap) + 30}
-        height={days * (cellSize + gap) + 6}
-        className="overflow-visible"
-      >
-        {/* Day labels */}
+      <svg width={weeks * (cellSize + gap) + 24} height={days * (cellSize + gap) + 4} className="overflow-visible">
         {dayLabels.map((label, i) =>
           label ? (
-            <text
-              key={i}
-              x={0}
-              y={i * (cellSize + gap) + cellSize / 2}
-              dominantBaseline="central"
-              className="fill-surface-400 dark:fill-surface-500 text-[9px]"
-            >
-              {label}
-            </text>
+            <text key={i} x={0} y={i * (cellSize + gap) + cellSize / 2} dominantBaseline="central" fill="#404040" fontSize="8" fontFamily="'Space Mono', monospace">{label}</text>
           ) : null
         )}
-
-        <g transform="translate(28, 0)">
+        <g transform="translate(20, 0)">
           {cells.map((cell, i) => (
-            <rect
-              key={i}
-              x={cell.x}
-              y={cell.y}
-              width={cellSize}
-              height={cellSize}
-              rx={2}
-              className={clsx(getColor(cell.count), 'transition-colors')}
-            >
-              <title>{`${cell.date}: ${cell.count} contributions`}</title>
+            <rect key={i} x={cell.x} y={cell.y} width={cellSize} height={cellSize} fill={getColor(cell.count)} className="transition-colors duration-200">
+              <title>{`${cell.date}: ${cell.count}`}</title>
             </rect>
           ))}
         </g>
       </svg>
-
-      {/* Legend */}
-      <div className="flex items-center gap-1 mt-2 justify-end">
-        <span className="text-[10px] text-surface-400 mr-1">Less</span>
-        {[0, 0.25, 0.5, 0.75, 1].map((level, i) => (
-          <div
-            key={i}
-            className={clsx(
-              'w-3 h-3 rounded-sm',
-              level === 0
-                ? 'bg-surface-100 dark:bg-surface-800'
-                : level <= 0.25
-                ? 'bg-brand-200 dark:bg-brand-900'
-                : level <= 0.5
-                ? 'bg-brand-400 dark:bg-brand-700'
-                : level <= 0.75
-                ? 'bg-brand-500 dark:bg-brand-500'
-                : 'bg-brand-600 dark:bg-brand-400'
-            )}
-          />
+      <div className="flex items-center gap-1 mt-3 justify-end">
+        <span className="text-[9px] text-nothing-grey-500 font-mono mr-1">Less</span>
+        {['#1a1a1a', '#3d1012', '#7a1a1e', '#b5181d', '#d71921'].map((c, i) => (
+          <div key={i} className="w-[10px] h-[10px]" style={{ backgroundColor: c }} />
         ))}
-        <span className="text-[10px] text-surface-400 ml-1">More</span>
+        <span className="text-[9px] text-nothing-grey-500 font-mono ml-1">More</span>
       </div>
     </div>
   );
 }
 
 // ============================================================
-// DONUT / RING CHART (SVG)
+// DONUT CHART
 // ============================================================
 export interface DonutChartProps {
   data: { label: string; value: number; color: string }[];
@@ -359,23 +227,14 @@ export interface DonutChartProps {
   centerValue?: string;
 }
 
-export function DonutChart({
-  data,
-  size = 200,
-  thickness = 30,
-  className,
-  centerLabel,
-  centerValue,
-}: DonutChartProps) {
+export function DonutChart({ data, size = 200, thickness = 24, className, centerLabel, centerValue }: DonutChartProps) {
   const center = size / 2;
   const outerR = center - 10;
   const innerR = outerR - thickness;
-
   const total = data.reduce((sum, d) => sum + d.value, 0);
 
   const segments = useMemo(() => {
     let currentAngle = -90;
-
     return data.map((d) => {
       const percentage = total > 0 ? d.value / total : 0;
       const angle = percentage * 360;
@@ -396,14 +255,7 @@ export function DonutChart({
       const x4 = center + innerR * Math.cos(startRad);
       const y4 = center + innerR * Math.sin(startRad);
 
-      const path = [
-        `M${x1},${y1}`,
-        `A${outerR},${outerR} 0 ${largeArc} 1 ${x2},${y2}`,
-        `L${x3},${y3}`,
-        `A${innerR},${innerR} 0 ${largeArc} 0 ${x4},${y4}`,
-        'Z',
-      ].join(' ');
-
+      const path = [`M${x1},${y1}`, `A${outerR},${outerR} 0 ${largeArc} 1 ${x2},${y2}`, `L${x3},${y3}`, `A${innerR},${innerR} 0 ${largeArc} 0 ${x4},${y4}`, 'Z'].join(' ');
       return { path, color: d.color, label: d.label, percentage };
     });
   }, [data, center, outerR, innerR, total]);
@@ -411,32 +263,17 @@ export function DonutChart({
   return (
     <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} className={className}>
       {segments.map((seg, i) => (
-        <path key={i} d={seg.path} fill={seg.color} className="transition-all hover:opacity-80">
+        <path key={i} d={seg.path} fill={seg.color} className="transition-all duration-300 hover:opacity-70">
           <title>{`${seg.label}: ${Math.round(seg.percentage * 100)}%`}</title>
         </path>
       ))}
-
       {(centerLabel || centerValue) && (
         <>
           {centerValue && (
-            <text
-              x={center}
-              y={center - 6}
-              textAnchor="middle"
-              className="fill-surface-900 dark:fill-white text-2xl font-bold"
-            >
-              {centerValue}
-            </text>
+            <text x={center} y={center - 6} textAnchor="middle" fill="#fafafa" fontSize="22" fontWeight="700" fontFamily="'Space Mono', monospace">{centerValue}</text>
           )}
           {centerLabel && (
-            <text
-              x={center}
-              y={center + 14}
-              textAnchor="middle"
-              className="fill-surface-500 text-xs"
-            >
-              {centerLabel}
-            </text>
+            <text x={center} y={center + 14} textAnchor="middle" fill="#525252" fontSize="10" fontFamily="'Space Mono', monospace">{centerLabel}</text>
           )}
         </>
       )}

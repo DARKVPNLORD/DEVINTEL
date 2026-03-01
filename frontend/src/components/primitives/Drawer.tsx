@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { clsx } from 'clsx';
 import { useKeyDown } from '../../hooks';
@@ -23,30 +23,22 @@ export function Drawer({ isOpen, onClose, title, position = 'right', size = 'md'
   if (!isOpen) return null;
 
   const sizes = { sm: 'w-72', md: 'w-96', lg: 'w-[480px]' };
-  const positionClasses = position === 'right'
-    ? 'right-0 animate-slide-in-right'
-    : 'left-0 animate-slide-in-left';
+  const positionClasses = position === 'right' ? 'right-0 animate-slideLeft' : 'left-0 animate-slideRight';
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex">
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-fade-in" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm animate-fade-in" onClick={onClose} />
       <div
         className={clsx(
-          'fixed top-0 bottom-0 bg-white dark:bg-surface-800 shadow-2xl flex flex-col',
+          'fixed top-0 bottom-0 bg-nothing-grey-900 border-l border-nothing-grey-800 shadow-2xl flex flex-col',
           sizes[size], positionClasses
         )}
-        role="dialog"
-        aria-modal="true"
-        aria-label={title}
+        role="dialog" aria-modal="true" aria-label={title}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-surface-200 dark:border-surface-700">
-          {title && <h2 className="font-semibold text-surface-900 dark:text-surface-100">{title}</h2>}
-          <button
-            onClick={onClose}
-            className="p-1 rounded-lg text-surface-400 hover:text-surface-600 dark:hover:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-700"
-            aria-label="Close"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-nothing-grey-800">
+          {title && <h2 className="text-sm font-mono font-bold text-nothing-white">{title}</h2>}
+          <button onClick={onClose} className="p-1 text-nothing-grey-500 hover:text-nothing-white transition-colors" aria-label="Close">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>

@@ -54,7 +54,7 @@ export class AnalyticsRepository {
               technical_depth_score, collaboration_score, skill_relevance_score,
               growth_velocity_score
        FROM dev_scores
-       WHERE user_id = $1 AND snapshot_date >= CURRENT_DATE - $2
+       WHERE user_id = $1 AND snapshot_date >= CURRENT_DATE - ($2 * INTERVAL '1 day')
        ORDER BY snapshot_date ASC`,
       [userId, days]
     );

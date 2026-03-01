@@ -8,10 +8,10 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-50 dark:bg-surface-950">
+      <div className="min-h-screen flex items-center justify-center bg-nothing-black">
         <div className="text-center space-y-4">
           <Spinner size="lg" />
-          <p className="text-sm text-surface-500">Loading...</p>
+          <p className="text-[11px] font-mono text-nothing-grey-500 uppercase tracking-widest">Loading</p>
         </div>
       </div>
     );
@@ -29,7 +29,7 @@ export function PublicRoute({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-50 dark:bg-surface-950">
+      <div className="min-h-screen flex items-center justify-center bg-nothing-black">
         <Spinner size="lg" />
       </div>
     );

@@ -11,36 +11,31 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', isLoading, leftIcon, rightIcon, className, children, disabled, ...rest }, ref) => {
-    // Filter out any non-DOM props that might leak through
     const { ...props } = rest;
-    const baseStyles = 'btn-base';
 
     const variants = {
-      primary: 'bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800 focus-visible:outline-brand-600 shadow-sm',
-      secondary: 'bg-surface-100 dark:bg-surface-700 text-surface-900 dark:text-surface-100 hover:bg-surface-200 dark:hover:bg-surface-600',
-      ghost: 'text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800',
-      danger: 'bg-danger text-white hover:bg-red-600 active:bg-red-700 focus-visible:outline-danger',
-      outline: 'border border-surface-300 dark:border-surface-600 text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800',
+      primary: 'bg-nothing-white text-nothing-black hover:bg-nothing-grey-200 active:bg-nothing-grey-300',
+      secondary: 'bg-nothing-grey-800 text-nothing-grey-200 border border-nothing-grey-700 hover:bg-nothing-grey-700 hover:text-nothing-white',
+      ghost: 'text-nothing-grey-400 hover:text-nothing-white hover:bg-nothing-grey-800',
+      danger: 'bg-nothing-red text-white hover:bg-red-700 active:bg-red-800',
+      outline: 'border border-nothing-grey-600 text-nothing-grey-300 hover:border-nothing-white hover:text-nothing-white',
     };
 
     const sizes = {
-      sm: 'h-8 px-3 text-xs',
-      md: 'h-10 px-4 text-sm',
-      lg: 'h-12 px-6 text-base',
+      sm: 'h-8 px-3 text-[11px]',
+      md: 'h-10 px-5 text-sm',
+      lg: 'h-12 px-7 text-sm',
     };
 
     return (
       <button
         ref={ref}
-        className={clsx(baseStyles, variants[variant], sizes[size], className)}
+        className={clsx('btn-base font-medium tracking-wide uppercase', variants[variant], sizes[size], className)}
         disabled={disabled || isLoading}
         {...props}
       >
         {isLoading ? (
-          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-          </svg>
+          <div className="w-4 h-4 border border-current border-t-transparent animate-spin" />
         ) : leftIcon}
         {children}
         {rightIcon}

@@ -13,24 +13,14 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     return (
       <label htmlFor={inputId} className={clsx('flex items-start gap-3 cursor-pointer group', className)}>
         <input
-          ref={ref}
-          id={inputId}
-          type="checkbox"
-          className="mt-0.5 h-4 w-4 rounded border-surface-300 dark:border-surface-600
-                     text-brand-600 focus:ring-2 focus:ring-brand-500/20 cursor-pointer
-                     bg-white dark:bg-surface-800 transition-colors"
+          ref={ref} id={inputId} type="checkbox"
+          className="mt-0.5 h-4 w-4 border-nothing-grey-700 text-nothing-red focus:ring-2 focus:ring-nothing-red/20 cursor-pointer bg-transparent transition-colors"
           {...props}
         />
         {(label || description) && (
           <div>
-            {label && (
-              <span className="text-sm font-medium text-surface-700 dark:text-surface-300 group-hover:text-surface-900 dark:group-hover:text-surface-100">
-                {label}
-              </span>
-            )}
-            {description && (
-              <p className="text-xs text-surface-500 mt-0.5">{description}</p>
-            )}
+            {label && <span className="text-xs font-mono text-nothing-grey-300 group-hover:text-nothing-white">{label}</span>}
+            {description && <p className="text-[10px] font-mono text-nothing-grey-600 mt-0.5">{description}</p>}
           </div>
         )}
       </label>
@@ -40,7 +30,6 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
 Checkbox.displayName = 'Checkbox';
 
-// Radio
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
 }
@@ -52,19 +41,11 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
     return (
       <label htmlFor={inputId} className={clsx('flex items-center gap-3 cursor-pointer group', className)}>
         <input
-          ref={ref}
-          id={inputId}
-          type="radio"
-          className="h-4 w-4 border-surface-300 dark:border-surface-600 text-brand-600
-                     focus:ring-2 focus:ring-brand-500/20 cursor-pointer
-                     bg-white dark:bg-surface-800 transition-colors"
+          ref={ref} id={inputId} type="radio"
+          className="h-4 w-4 border-nothing-grey-700 text-nothing-red focus:ring-2 focus:ring-nothing-red/20 cursor-pointer bg-transparent transition-colors"
           {...props}
         />
-        {label && (
-          <span className="text-sm font-medium text-surface-700 dark:text-surface-300 group-hover:text-surface-900 dark:group-hover:text-surface-100">
-            {label}
-          </span>
-        )}
+        {label && <span className="text-xs font-mono text-nothing-grey-300 group-hover:text-nothing-white">{label}</span>}
       </label>
     );
   }

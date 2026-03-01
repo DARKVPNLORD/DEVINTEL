@@ -1,10 +1,14 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { AuthService } from './auth.service';
+import { UsersRepository } from '../users/users.repository';
 import { getEnv } from '../../config/env';
 
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersRepo: UsersRepository,
+  ) {}
 
   register = async (req: Request, res: Response): Promise<void> => {
     const { user, tokens } = await this.authService.register(req.body);
@@ -54,9 +58,10 @@ export class AuthController {
   };
 
   me = async (req: Request, res: Response): Promise<void> => {
+    const user = await this.usersRepo.findById(req.user!.userId);
     res.status(StatusCodes.OK).json({
       status: 'success',
-      data: { user: req.user },
+      data: { user },
     });
   };
 

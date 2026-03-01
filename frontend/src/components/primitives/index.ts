@@ -27,10 +27,10 @@ export { Dropdown } from './Dropdown';
 export type { DropdownProps } from './Dropdown';
 
 export { Table } from './Table';
-export type { TableProps, Column } from './Table';
+export type { TableProps, TableColumn } from './Table';
 
 export { Tabs } from './Tabs';
-export type { TabsProps, Tab } from './Tabs';
+export type { TabsProps, TabItem } from './Tabs';
 
 export { Accordion } from './Accordion';
 export type { AccordionProps, AccordionItem } from './Accordion';

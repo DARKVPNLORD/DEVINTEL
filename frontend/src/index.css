@@ -4,60 +4,112 @@
 
 @layer base {
   * {
-    @apply border-surface-200 dark:border-surface-700;
+    border-color: #1a1a1a;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply min-h-screen;
+    min-height: 100vh;
+    background-color: #0a0a0a;
+    color: #fafafa;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-brand-500;
+    outline-width: 1px;
+    outline-offset: 2px;
+    outline-color: #d71921;
   }
 
   ::selection {
-    @apply bg-brand-500/20;
+    background-color: rgba(215, 25, 33, 0.2);
+    color: #fafafa;
   }
 
-  /* Scrollbar */
+  /* Nothing-style scrollbar */
   ::-webkit-scrollbar {
-    @apply w-2 h-2;
+    width: 3px;
+    height: 3px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface-300 dark:bg-surface-600 rounded-full;
+    background: #404040;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-surface-400 dark:bg-surface-500;
+    background: #737373;
   }
 }
 
 @layer components {
+  /* Nothing-style card — minimal, sharp */
   .card {
-    @apply bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 shadow-sm;
+    background-color: #111111;
+    border: 1px solid #1a1a1a;
   }
 
   .card-hover {
-    @apply card transition-shadow hover:shadow-md;
+    background-color: #111111;
+    border: 1px solid #1a1a1a;
+    @apply transition-all duration-300 ease-out;
+  }
+  .card-hover:hover {
+    border-color: #404040;
+    background-color: rgba(26, 26, 26, 0.5);
   }
 
+  /* Clean input */
   .input-base {
-    @apply w-full rounded-lg border border-surface-300 dark:border-surface-600 bg-white dark:bg-surface-800 
-           px-3 py-2 text-sm text-surface-900 dark:text-surface-100
-           placeholder:text-surface-400 dark:placeholder:text-surface-500
-           focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none
-           disabled:opacity-50 disabled:cursor-not-allowed
-           transition-colors;
+    @apply w-full px-4 py-3 text-sm font-sans
+           disabled:opacity-30 disabled:cursor-not-allowed
+           transition-all duration-200;
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    color: #fafafa;
+  }
+  .input-base::placeholder {
+    color: #525252;
+  }
+  .input-base:focus {
+    border-color: #d71921;
+    outline: none;
   }
 
+  /* Minimal button */
   .btn-base {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium
-           transition-all duration-150 focus-visible:outline-2 focus-visible:outline-offset-2
-           disabled:opacity-50 disabled:cursor-not-allowed select-none;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium
+           transition-all duration-200 ease-out
+           disabled:opacity-30 disabled:cursor-not-allowed select-none
+           active:scale-[0.98];
   }
+
+  /* Dot grid background */
+  .bg-dots {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Nothing-style glow effect */
+  .glow-red {
+    box-shadow: 0 0 20px rgba(215, 25, 33, 0.15), 0 0 60px rgba(215, 25, 33, 0.05);
+  }
+
+  /* Smooth number counter animation */
+  .animate-number {
+    @apply animate-count-up;
+  }
+
+  /* Stagger children animation helper */
+  .stagger-children > *:nth-child(1) { @apply opacity-0 animate-stagger-1; }
+  .stagger-children > *:nth-child(2) { @apply opacity-0 animate-stagger-2; }
+  .stagger-children > *:nth-child(3) { @apply opacity-0 animate-stagger-3; }
+  .stagger-children > *:nth-child(4) { @apply opacity-0 animate-stagger-4; }
+  .stagger-children > *:nth-child(5) { @apply opacity-0 animate-stagger-5; }
 }

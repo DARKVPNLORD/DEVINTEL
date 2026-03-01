@@ -14,17 +14,17 @@ export function AppLayout() {
   }, [isMobile]);
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-950">
+    <div className="min-h-screen bg-nothing-black">
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((prev) => !prev)} />
       <Navbar sidebarCollapsed={collapsed} />
 
       <main
         className={clsx(
-          'pt-16 min-h-screen transition-all duration-300',
-          collapsed ? 'pl-[68px]' : 'pl-64'
+          'pt-14 min-h-screen transition-all duration-500 ease-out',
+          collapsed ? 'pl-16' : 'pl-56'
         )}
       >
-        <div className="p-6 max-w-7xl mx-auto">
+        <div className="p-8 max-w-[1400px] mx-auto animate-fade-in">
           <Outlet />
         </div>
       </main>

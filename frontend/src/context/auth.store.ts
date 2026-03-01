@@ -14,6 +14,7 @@ interface AuthStore {
   handleOAuthCallback: (accessToken: string, refreshToken: string) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
+  updateUser: (partial: Partial<User>) => void;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -89,4 +90,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   },
 
   clearError: () => set({ error: null }),
+
+  updateUser: (partial) =>
+    set((state) => ({ user: state.user ? { ...state.user, ...partial } : state.user })),
 }));

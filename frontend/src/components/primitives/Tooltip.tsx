@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { clsx } from 'clsx';
 
 export interface TooltipProps {
@@ -32,8 +32,8 @@ export function Tooltip({ content, position = 'top', children }: TooltipProps) {
         <div
           role="tooltip"
           className={clsx(
-            'absolute z-50 px-2.5 py-1.5 text-xs font-medium rounded-lg whitespace-nowrap',
-            'bg-surface-900 dark:bg-surface-100 text-white dark:text-surface-900',
+            'absolute z-50 px-2.5 py-1.5 text-[10px] font-mono whitespace-nowrap',
+            'bg-nothing-white text-nothing-black',
             'shadow-lg animate-fade-in pointer-events-none',
             positionStyles[position]
           )}

@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 
 // ============================================================
-// BADGE
+// BADGE — Nothing-style: minimal, uppercase, sharp
 // ============================================================
 export interface BadgeProps {
   children: React.ReactNode;
@@ -11,28 +11,32 @@ export interface BadgeProps {
 
 export function Badge({ children, variant = 'default', size = 'sm' }: BadgeProps) {
   const variants = {
-    default: 'bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-300',
-    success: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
-    warning: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
-    danger: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
-    info: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
-    brand: 'bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400',
+    default: 'border-nothing-grey-600 text-nothing-grey-300',
+    success: 'border-emerald-500/40 text-emerald-400',
+    warning: 'border-yellow-500/40 text-yellow-400',
+    danger: 'border-nothing-red/40 text-nothing-red',
+    info: 'border-nothing-red/40 text-nothing-red',
+    brand: 'border-nothing-red/40 text-nothing-red',
   };
 
   const sizes = {
-    sm: 'text-xs px-2 py-0.5',
-    md: 'text-sm px-2.5 py-1',
+    sm: 'text-[10px] px-2 py-0.5',
+    md: 'text-xs px-3 py-1',
   };
 
   return (
-    <span className={clsx('inline-flex items-center font-medium rounded-full', variants[variant], sizes[size])}>
+    <span className={clsx(
+      'inline-flex items-center font-mono font-medium uppercase tracking-wider border',
+      variants[variant],
+      sizes[size]
+    )}>
       {children}
     </span>
   );
 }
 
 // ============================================================
-// AVATAR
+// AVATAR — Nothing-style: geometric, sharp borders
 // ============================================================
 export interface AvatarProps {
   src?: string | null;
@@ -43,10 +47,10 @@ export interface AvatarProps {
 
 export function Avatar({ src, alt, name, size = 'md' }: AvatarProps) {
   const sizes = {
-    sm: 'w-8 h-8 text-xs',
-    md: 'w-10 h-10 text-sm',
-    lg: 'w-12 h-12 text-base',
-    xl: 'w-16 h-16 text-lg',
+    sm: 'w-8 h-8 text-[10px]',
+    md: 'w-10 h-10 text-xs',
+    lg: 'w-12 h-12 text-sm',
+    xl: 'w-16 h-16 text-base',
   };
 
   const initials = name
@@ -61,7 +65,7 @@ export function Avatar({ src, alt, name, size = 'md' }: AvatarProps) {
       <img
         src={src}
         alt={alt || name || 'Avatar'}
-        className={clsx('rounded-full object-cover', sizes[size])}
+        className={clsx('object-cover border border-nothing-grey-700', sizes[size])}
       />
     );
   }
@@ -69,8 +73,8 @@ export function Avatar({ src, alt, name, size = 'md' }: AvatarProps) {
   return (
     <div
       className={clsx(
-        'rounded-full flex items-center justify-center font-medium',
-        'bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400',
+        'flex items-center justify-center font-mono font-bold',
+        'bg-nothing-grey-800 border border-nothing-grey-700 text-nothing-grey-300',
         sizes[size]
       )}
       aria-label={name || 'Avatar'}
@@ -81,7 +85,7 @@ export function Avatar({ src, alt, name, size = 'md' }: AvatarProps) {
 }
 
 // ============================================================
-// CARD
+// CARD — Nothing-style: sharp edges, subtle border, dark
 // ============================================================
 export interface CardProps {
   children: React.ReactNode;
@@ -94,19 +98,23 @@ export function Card({ children, className, padding = 'md', hoverable }: CardPro
   const paddings = {
     none: '',
     sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
+    md: 'p-5',
+    lg: 'p-6',
   };
 
   return (
-    <div className={clsx(hoverable ? 'card-hover' : 'card', paddings[padding], className)}>
+    <div className={clsx(
+      hoverable ? 'card-hover' : 'card',
+      paddings[padding],
+      className
+    )}>
       {children}
     </div>
   );
 }
 
 // ============================================================
-// SPINNER
+// SPINNER — Nothing-style: minimal dot-circle
 // ============================================================
 export interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg';
@@ -114,29 +122,19 @@ export interface SpinnerProps {
 }
 
 export function Spinner({ size = 'md', className }: SpinnerProps) {
-  const sizes = { sm: 'w-4 h-4', md: 'w-8 h-8', lg: 'w-12 h-12' };
+  const sizes = { sm: 'w-4 h-4', md: 'w-6 h-6', lg: 'w-10 h-10' };
 
   return (
-    <svg
-      className={clsx('animate-spin text-brand-600', sizes[size], className)}
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      role="status"
-      aria-label="Loading"
-    >
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      />
-    </svg>
+    <div className={clsx('relative', sizes[size], className)} role="status" aria-label="Loading">
+      <div className="absolute inset-0 border border-nothing-grey-700 animate-spin" style={{ animationDuration: '1.2s' }}>
+        <div className="absolute -top-[2px] left-1/2 -translate-x-1/2 w-1 h-1 bg-nothing-red" />
+      </div>
+    </div>
   );
 }
 
 // ============================================================
-// SKELETON
+// SKELETON — Nothing-style: subtle pulse, sharp
 // ============================================================
 export interface SkeletonProps {
   width?: string;
@@ -145,19 +143,11 @@ export interface SkeletonProps {
   className?: string;
 }
 
-export function Skeleton({ width, height = '1rem', rounded = 'md', className }: SkeletonProps) {
-  const roundedClasses = {
-    sm: 'rounded',
-    md: 'rounded-md',
-    lg: 'rounded-lg',
-    full: 'rounded-full',
-  };
-
+export function Skeleton({ width, height = '1rem', className }: SkeletonProps) {
   return (
     <div
       className={clsx(
-        'animate-pulse-soft bg-surface-200 dark:bg-surface-700',
-        roundedClasses[rounded],
+        'animate-pulse bg-nothing-grey-800',
         className
       )}
       style={{ width, height }}

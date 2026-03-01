@@ -16,13 +16,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
+          <label htmlFor={inputId} className="block text-[11px] font-mono uppercase tracking-widest text-nothing-grey-400 mb-2">
             {label}
           </label>
         )}
         <div className="relative flex items-center">
           {leftAddon && (
-            <span className="absolute left-3 text-surface-400 dark:text-surface-500 pointer-events-none">
+            <span className="absolute left-4 text-nothing-grey-500 pointer-events-none">
               {leftAddon}
             </span>
           )}
@@ -31,9 +31,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             className={clsx(
               'input-base',
-              leftAddon && 'pl-10',
-              rightAddon && 'pr-10',
-              error && 'border-danger focus:border-danger focus:ring-danger/20',
+              leftAddon && 'pl-11',
+              rightAddon && 'pr-11',
+              error && 'border-nothing-red focus:border-nothing-red',
               className
             )}
             aria-invalid={!!error}
@@ -41,18 +41,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {rightAddon && (
-            <span className="absolute right-3 text-surface-400 dark:text-surface-500">
+            <span className="absolute right-4 text-nothing-grey-500">
               {rightAddon}
             </span>
           )}
         </div>
         {error && (
-          <p id={`${inputId}-error`} role="alert" className="mt-1.5 text-xs text-danger">
+          <p id={`${inputId}-error`} role="alert" className="mt-1.5 text-[11px] text-nothing-red font-mono">
             {error}
           </p>
         )}
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="mt-1.5 text-xs text-surface-500">
+          <p id={`${inputId}-hint`} className="mt-1.5 text-[11px] text-nothing-grey-500 font-mono">
             {hint}
           </p>
         )}

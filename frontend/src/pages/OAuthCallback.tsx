@@ -34,22 +34,22 @@ export function OAuthCallbackPage() {
   }, [searchParams, handleOAuthCallback, navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-50 dark:bg-surface-950">
+    <div className="min-h-screen flex items-center justify-center bg-nothing-black">
       <div className="text-center space-y-4">
         {error ? (
           <>
-            <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto">
-              <svg className="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-10 h-10 border border-nothing-red flex items-center justify-center mx-auto">
+              <svg className="w-5 h-5 text-nothing-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </div>
-            <p className="text-red-600 dark:text-red-400 font-medium">{error}</p>
-            <p className="text-sm text-surface-500">Redirecting to login...</p>
+            <p className="text-sm font-mono text-nothing-red">{error}</p>
+            <p className="text-xs font-mono text-nothing-grey-500">Redirecting to login...</p>
           </>
         ) : (
           <>
             <Spinner size="lg" />
-            <p className="text-sm text-surface-500">Completing authentication...</p>
+            <p className="text-xs font-mono text-nothing-grey-500">Completing authentication...</p>
           </>
         )}
       </div>

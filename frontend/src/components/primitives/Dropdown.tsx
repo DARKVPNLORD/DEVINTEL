@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { clsx } from 'clsx';
 import { useClickOutside } from '../../hooks';
 
@@ -31,14 +31,12 @@ export function Dropdown({ trigger, items, onSelect, align = 'left' }: DropdownP
 
   return (
     <div ref={ref} className="relative inline-block">
-      <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
-        {trigger}
-      </div>
+      <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">{trigger}</div>
       {isOpen && (
         <div
           className={clsx(
-            'absolute z-40 mt-1.5 min-w-[180px] py-1 rounded-lg shadow-lg border',
-            'bg-white dark:bg-surface-800 border-surface-200 dark:border-surface-700',
+            'absolute z-40 mt-1 min-w-[180px] py-1 border shadow-lg',
+            'bg-nothing-grey-900 border-nothing-grey-800',
             'animate-scale-in origin-top',
             align === 'right' ? 'right-0' : 'left-0'
           )}
@@ -50,10 +48,10 @@ export function Dropdown({ trigger, items, onSelect, align = 'left' }: DropdownP
               onClick={() => handleSelect(item)}
               disabled={item.disabled}
               className={clsx(
-                'w-full flex items-center gap-2 px-3 py-2 text-sm text-left transition-colors',
+                'w-full flex items-center gap-2 px-3 py-2 text-xs font-mono text-left transition-colors',
                 item.danger
-                  ? 'text-danger hover:bg-red-50 dark:hover:bg-red-900/20'
-                  : 'text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-700',
+                  ? 'text-nothing-red hover:bg-nothing-red/10'
+                  : 'text-nothing-grey-300 hover:bg-nothing-grey-800 hover:text-nothing-white',
                 item.disabled && 'opacity-50 cursor-not-allowed'
               )}
               role="menuitem"

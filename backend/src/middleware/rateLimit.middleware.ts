@@ -1,9 +1,11 @@
 import rateLimit from 'express-rate-limit';
 import { StatusCodes } from 'http-status-codes';
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 export const globalRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: isDev ? 10000 : 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -16,7 +18,7 @@ export const globalRateLimit = rateLimit({
 
 export const authRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: isDev ? 1000 : 20,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -29,7 +31,7 @@ export const authRateLimit = rateLimit({
 
 export const uploadRateLimit = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10,
+  max: isDev ? 1000 : 10,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
