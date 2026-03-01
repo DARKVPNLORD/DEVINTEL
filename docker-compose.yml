@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: devintel
+      POSTGRES_USER: devintel
+      POSTGRES_PASSWORD: devintel_secret
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U devintel']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - '4000:4000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: devintel
+      DB_USER: devintel
+      DB_PASSWORD: devintel_secret
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: change-me-in-production-min-32-chars-long
+      JWT_REFRESH_SECRET: change-me-refresh-secret-min-32-chars
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      GITHUB_CALLBACK_URL: http://localhost:4000/api/auth/github/callback
+      FRONTEND_URL: http://localhost:4000
+      CORS_ORIGINS: http://localhost:4000,http://localhost:5173
+    volumes:
+      - uploads:/app/backend/uploads
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:

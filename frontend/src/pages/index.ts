@@ -1,0 +1,8 @@
+export { LoginPage } from './Login';
+export { RegisterPage } from './Register';
+export { OAuthCallbackPage } from './OAuthCallback';
+export { DashboardPage } from './Dashboard';
+export { RepositoriesPage } from './Repositories';
+export { ResumePage } from './Resume';
+export { ProfilePage } from './Profile';
+export { SettingsPage } from './Settings';
