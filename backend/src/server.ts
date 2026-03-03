@@ -39,6 +39,10 @@ async function bootstrap(): Promise<void> {
 
   const app = express();
 
+  // Render and other cloud platforms run behind a reverse proxy.
+  // Needed so rate-limit and req.ip use X-Forwarded-For correctly.
+  app.set('trust proxy', env.NODE_ENV === 'production' ? 1 : false);
+
   // ============================================================
   // GLOBAL MIDDLEWARE
   // ============================================================
